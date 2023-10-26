@@ -3,32 +3,34 @@
 //Class Constructor
 Board::Board() : tiles(SIZE, vector<Tile>(SIZE)) {}
 
-bool Board::slideLine(vector<Tile> &line) {
-    bool changed = true;
+bool Board::slideLine(vector<Tile>& line) {
     vector<Tile> newLine(SIZE, Tile());
-
+    bool changed = false;
     int fillPos = 0;
+
     for (int i = 0; i < SIZE; i++) {
         if (line[i].getValue() != 0) {
             if (newLine[fillPos].getValue() == 0) {
                 newLine[fillPos] = line[i];
-            }
-            else if (newLine[fillPos].getValue() == line[i].getValue()) {
+            } else if (newLine[fillPos].getValue() == line[i].getValue()) {
                 newLine[fillPos].setValue(newLine[fillPos].getValue() * 2);
                 fillPos++;
-            }
-            else {
+            } else {
                 fillPos++;
                 newLine[fillPos] = line[i];
             }
-            if (i != fillPos) changed = true;
         }
+    }
+
+    for (int i = 0; i < SIZE; ++i) {
+        if (line[i].getValue() != newLine[i].getValue()) changed = true;
     }
 
     line = newLine;
     return changed;
 }
 
+//Display Game Board
 void Board::print() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -42,8 +44,10 @@ void Board::print() {
     }
 }
 
+//Add Random Tile On The Board
 bool Board::addRandomTile() {
     vector<std::pair<int, int>> emptyCells;
+
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
             if (tiles[i][j].getValue() == 0) {
@@ -56,10 +60,10 @@ bool Board::addRandomTile() {
 
     int index = rand() % emptyCells.size();
     int randomValue = rand() % 100;
+
     if (randomValue < 70) {
         tiles[emptyCells[index].first][emptyCells[index].second].setValue(2);
-    }
-    else {
+    } else {
         tiles[emptyCells[index].first][emptyCells[index].second].setValue(4);
     }
 
@@ -68,12 +72,10 @@ bool Board::addRandomTile() {
 
 bool Board::slideBoard() {
     bool key = false;
+    int c = 0;
 
     while (!key) {
-
-        int c = 0;
-
-        switch ( ( c = _getch() ) ) {
+        switch ((c = _getch())) {
             case KEY_Z:
                 for (int j = 0; j < SIZE; j++) {
                     vector<Tile> column;
@@ -124,6 +126,7 @@ bool Board::slideBoard() {
     return key;
 }
 
+//Check if Game is Win
 bool Board::checkWin() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
@@ -135,6 +138,7 @@ bool Board::checkWin() {
     return false;
 }
 
+//Check if Game is Over
 bool Board::checkGameOver() {
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {

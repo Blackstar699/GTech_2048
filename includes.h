@@ -3,8 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include <ctime>
-#include <cstdlib>
 #include <iomanip>
 #include <conio.h>
 
@@ -12,6 +10,7 @@
 #define KEY_Q 113
 #define KEY_S 115
 #define KEY_D 100
+#define ENTER 13
 
 #define SIZE 4
 #define WINNING_TILE 2048
